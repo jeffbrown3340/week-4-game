@@ -4,6 +4,7 @@ var powerBases = [4, 6, 8, 10],
     images = ["blue.JPG", "red.JPG", "pink.JPG", "green.JPG"],
     initialHealths = [125, 150, 175, 200],
     myCtr = 0,
+    myNBSP = String.fromCharCode(160),
     playerProfiles = [],
     profileCount;
 
@@ -22,12 +23,29 @@ function spawnRanger () {
 
 function initializeGame() {
     for (var i = 0; i < playerProfiles.length; i++) {
-        var imageRanger = $("<img>");
-        imageRanger.addClass("ranger-image");
-        imageRanger.attr("id", "ranger" + i);
-        imageRanger.attr("src", "assets/images/" + playerProfiles[i].imageSource);
-        imageRanger.attr("data-healthpoints", playerProfiles[i].healthPoints);
-        $("#player-on-deck").append(imageRanger);
+        var tempElement = $("<div>");
+        tempElement.addClass("ranger-image-object");
+        tempElement.attr("id", "ranger" + i);
+        $("#player-on-deck").append(tempElement);
+        tempElement = $("<div>");
+        tempElement.addClass("ranger-image-frame")
+        tempElement.attr("id", "ranger" + i + "-frame");
+        $("#ranger" + i).append(tempElement);
+        tempElement = $("<img>");
+        tempElement.addClass("ranger-image");
+        tempElement.attr("src", "assets/images/" + playerProfiles[i].imageSource);
+        tempElement.attr("data-healthpoints", playerProfiles[i].healthPoints);
+        $("#ranger" + i + "-frame").append(tempElement)
+        tempElement = $("<div>");
+        tempElement.addClass("ranger-image-points");
+        tempElement.attr("id", "ranger" + i + "-points-text");
+        tempElement.text(playerProfiles[i].healthPoints);
+        $("#ranger" + i + "-frame").append(tempElement);
+        tempElement = $("<div>");
+        tempElement.addClass("ranger-spacer");
+        tempElement.text(myNBSP);
+        $("#player-on-deck").append(tempElement);
+
     }
     $("#top-text").text("Click a player for yourself ...");
 }

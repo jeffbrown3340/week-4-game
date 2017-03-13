@@ -1,3 +1,22 @@
+.ranger-image-object {
+	float: left;
+	background-color: red;
+	padding: 5px;
+	max-width: 100px;
+	height: 240px;
+}
+
 .ranger-image {
-    height: 300px;
+	display: block;
+	margin: auto;
+	width: 95%;
+}
+.ranger-image-points {
+	text-align: center;
+}
+
+.ranger-spacer {
+	float: left;
+	background-color: white;
+	width: 5px;
 }

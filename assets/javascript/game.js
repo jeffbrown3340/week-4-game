@@ -1,6 +1,6 @@
-// init
 var powerBases = [4, 6, 8, 10],
     CONST_counterAttack = 25,
+    gameState,
     images = ["blue.JPG", "red.JPG", "pink.JPG", "green.JPG"],
     initialHealths = [125, 150, 175, 200],
     myCtr = 0,
@@ -8,11 +8,45 @@ var powerBases = [4, 6, 8, 10],
     playerProfiles = [],
     profileCount;
 
-$("body").on("click", ".ranger-image", function() {
-    console.log(arguments);
-    console.log(this);
-    console.log(this.id);
+$("body").on("click", ".ranger-image-object", function() {
+    var grabbedRanger, divId, tempElement;
+    switch(gameState) {
+        case "midGame":
+            return;
+        case "selectSelf":
+        case "selectOpponent":
+            $(this).css("background-color", "red");
+            if (gameState === "selectSelf") {
+                for (i = 0; i < profileCount; i++) {
+                    grabbedRanger = $("#ranger" + i).detach();
+                    // initialize divId to battlefield but change to on-deck if not selected ranger
+                    divId = "#battlefield";
+                    if ("ranger" + i != this.id) { divId = "#opponent-on-deck" }
+                    // everybody gets moved to their next place with a right side spacer div
+                    $(divId).append(grabbedRanger);
+                    appendSpacer(divId, "ranger-spacer");
+                    gameState = "selectOpponent"
+                    $("#top-text").text(myNBSP);
+                    $("#mid-text").text("Select your  opponent...");
+                }
+                $("#player-on-deck").empty();
+            } else {
+                appendSpacer("#battlefield", "ranger-spacer");
+                grabbedRanger = $(this).detach();
+                $("#battlefield").append(grabbedRanger);
+                $("#mid-text").text(myNBSP);
+            }
+            return;
+    }        
 });
+
+function appendSpacer(elementString, classToAppend) {
+    var tempElement = $("<div>");
+    tempElement.addClass(classToAppend);
+    tempElement.text(myNBSP);
+    $(elementString).append(tempElement);
+}
+
 
 function spawnRanger(arrayIndex) {
     tempPProfile = { "imageSource": "", "powerBase": 0, "attackPower": 0, "healthPoints": 0, "index": -1 };
@@ -55,7 +89,8 @@ function initializeGame() {
         createRangerIcon("#player-on-deck", playerProfiles[i]);
     }
     $(".ranger-image-object").css("background-color", "green");
-    $("#top-text").text("Click a player for yourself ...");
+    $("#top-text").text("Select a player for yourself ...");
+    gameState = "selectSelf";
 }
 
 profileCount = images.length;

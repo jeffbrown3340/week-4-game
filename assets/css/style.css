@@ -20,3 +20,9 @@
     background-color: white;
     width: 5px;
 }
+
+#battlefield,
+#opponent-on-deck,
+#mid-text {
+    clear: left;
+}

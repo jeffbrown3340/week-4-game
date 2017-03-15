@@ -34,7 +34,7 @@ $("body").on("click", ".ranger-image-object", function() {
                     $(divId).append(grabbedRanger);
                     gameState = "selectOpponent"
                     $("#top-text").text(myNBSP);
-                    $("#mid-text").text("Select your  opponent...");
+                    $("#mid-text").text("Select your opponent...");
                 }
                 $("#player-on-deck").empty();
             } else if (gameState === "selectOpponent") {
@@ -52,17 +52,26 @@ $("body").on("click", ".ranger-image-object", function() {
 });
 
 $("body").on("click", "#attack-button", function() {
-    console.log("playerSelfN", playerSelfN);
-    console.log('playerOpponentN',playerOpponentN);
-    console.log("playerProfiles[playerSelfN].attackPower",playerProfiles[playerSelfN].attackPower);
-    console.log("playerProfiles[playerOpponentN].attackPower", playerProfiles[playerOpponentN].attackPower);
-    console.log("playerProfiles[playerSelfN].imageSource", playerProfiles[playerSelfN].imageSource);
-    console.log("playerProfiles[playerSelfN].powerBase", playerProfiles[playerSelfN].powerBase);
+    if (gameState != "midGame") {return}
+    console.log("future");
     playerProfiles[playerSelfN].healthPoints = playerProfiles[playerSelfN].healthPoints - playerProfiles[playerOpponentN].attackPower;
+    if (playerProfiles[playerSelfN].healthPoints <= 0) {
+        $("#ranger" + playerSelfN + "-points-text").text("0");
+        $("#mid-text").text("Zero Health...Game over (Refresh).");
+        gameState = "GameOver";
+    }
     $("#ranger" + playerSelfN + "-points-text").text(playerProfiles[playerSelfN].healthPoints);
+    if (gameState === "GameOver") {return}
     playerProfiles[playerOpponentN].healthPoints = playerProfiles[playerOpponentN].healthPoints - playerProfiles[playerSelfN].attackPower;
-    $("#ranger" + playerOpponentN + "-points-text").text(playerProfiles[playerOpponentN].healthPoints);
     playerProfiles[playerSelfN].attackPower += playerProfiles[playerSelfN].powerBase;
+    if (playerProfiles[playerOpponentN].healthPoints <= 0) {
+        $("#ranger" + playerOpponentN + "-points-text").text("0");
+        gameState = "selectOpponent";
+        $("#mid-text").text("Select next opponent...");
+        return;
+    }
+    $("#ranger" + playerOpponentN + "-points-text").text(playerProfiles[playerOpponentN].healthPoints);
+
 });
 
 function appendSpacer(elementString, classToAppend, html) {

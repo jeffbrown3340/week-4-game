@@ -1,7 +1,7 @@
 var powerBases = [4, 6, 8, 10],
     CONST_counterAttack = 25,
     gameState,
-    images = ["blue.JPG", "red.JPG", "pink.JPG", "green.JPG"],
+    images = ["blue.JPG", "red0.JPG", "pink0.JPG", "green.JPG"],
     initialHealths = [125, 150, 175, 200],
     myCtr = 0,
     myNBSP = String.fromCharCode(160),

@@ -26,3 +26,17 @@
 #mid-text {
     clear: left;
 }
+
+.div-vs {
+    float: left;
+    padding: 5px;
+    max-width: 100px;
+    height: 240px;
+    font-size: 4em;
+}
+
+#button-row {
+    clear: left;
+    padding: 5px;
+    max-width: 300px;
+}

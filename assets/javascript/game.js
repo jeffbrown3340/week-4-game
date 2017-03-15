@@ -6,6 +6,8 @@ var powerBases = [4, 6, 8, 10],
     myCtr = 0,
     myNBSP = String.fromCharCode(160),
     playerProfiles = [],
+    playerOpponentN,
+    playerSelfN,
     profileCount;
 
 $("body").on("click", ".ranger-image-object", function() {
@@ -19,31 +21,54 @@ $("body").on("click", ".ranger-image-object", function() {
             if (gameState === "selectSelf") {
                 for (i = 0; i < profileCount; i++) {
                     grabbedRanger = $("#ranger" + i).detach();
-                    // initialize divId to battlefield but change to on-deck if not selected ranger
-                    divId = "#battlefield";
-                    if ("ranger" + i != this.id) { divId = "#opponent-on-deck" }
+                    // if current i is clicked item, put in battlefield, otherwise put on-deck
+                    if ("ranger" + i === this.id) {
+                        divId = "#battlefield";
+                        playerSelfN = i;
+                        playerProfiles[i].attackPower = playerProfiles[i].powerBase;
+                    } else {
+                        divId = "#opponent-on-deck";
+                        playerProfiles[i].attackPower = 25;
+                    }
                     // everybody gets moved to their next place with a right side spacer div
                     $(divId).append(grabbedRanger);
-                    appendSpacer(divId, "ranger-spacer");
                     gameState = "selectOpponent"
                     $("#top-text").text(myNBSP);
                     $("#mid-text").text("Select your  opponent...");
                 }
                 $("#player-on-deck").empty();
-            } else {
-                appendSpacer("#battlefield", "ranger-spacer");
+            } else if (gameState === "selectOpponent") {
+                appendSpacer("#battlefield", "div-vs", "<b>VS</b>" );
                 grabbedRanger = $(this).detach();
+                playerOpponentN = this.id.replace("ranger", "");
                 $("#battlefield").append(grabbedRanger);
                 $("#mid-text").text(myNBSP);
+                gameState = "midGame"
+                $("#mid-text").text("Remaining opponents ...");
+                $("#button-row").html("<button type='button' class='btn btn-danger btn-block' id='attack-button'>Attack</button>")
             }
             return;
     }        
 });
 
-function appendSpacer(elementString, classToAppend) {
+$("body").on("click", "#attack-button", function() {
+    console.log("playerSelfN", playerSelfN);
+    console.log('playerOpponentN',playerOpponentN);
+    console.log("playerProfiles[playerSelfN].attackPower",playerProfiles[playerSelfN].attackPower);
+    console.log("playerProfiles[playerOpponentN].attackPower", playerProfiles[playerOpponentN].attackPower);
+    console.log("playerProfiles[playerSelfN].imageSource", playerProfiles[playerSelfN].imageSource);
+    console.log("playerProfiles[playerSelfN].powerBase", playerProfiles[playerSelfN].powerBase);
+    playerProfiles[playerSelfN].healthPoints = playerProfiles[playerSelfN].healthPoints - playerProfiles[playerOpponentN].attackPower;
+    $("#ranger" + playerSelfN + "-points-text").text(playerProfiles[playerSelfN].healthPoints);
+    playerProfiles[playerOpponentN].healthPoints = playerProfiles[playerOpponentN].healthPoints - playerProfiles[playerSelfN].attackPower;
+    $("#ranger" + playerOpponentN + "-points-text").text(playerProfiles[playerOpponentN].healthPoints);
+    playerProfiles[playerSelfN].attackPower += playerProfiles[playerSelfN].powerBase;
+});
+
+function appendSpacer(elementString, classToAppend, html) {
     var tempElement = $("<div>");
     tempElement.addClass(classToAppend);
-    tempElement.text(myNBSP);
+    tempElement.html(html);
     $(elementString).append(tempElement);
 }
 
@@ -52,6 +77,7 @@ function spawnRanger(arrayIndex) {
     tempPProfile = { "imageSource": "", "powerBase": 0, "attackPower": 0, "healthPoints": 0, "index": -1 };
     tempPProfile.imageSource = images.splice(Math.floor(Math.random() * images.length), 1)[0];
     tempPProfile.healthPoints = initialHealths.splice(Math.floor(Math.random() * initialHealths.length), 1)[0];
+    tempPProfile.powerBase = powerBases.splice(Math.floor(Math.random() * powerBases.length), 1)[0];
     tempPProfile.index = arrayIndex;
     return tempPProfile;
 }

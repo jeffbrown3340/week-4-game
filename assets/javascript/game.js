@@ -89,7 +89,8 @@ $("body").on("click", "#attack-button", function() {
     // if player is dead
     if (playerProfiles[playerSelfN].healthPoints <= 0) {
         $("#ranger" + playerSelfN + "-points-text").text("0");
-        $("#mid-text").html("Zero Health, Game over<br>Next time, Goldar!<br>(Refresh)");
+        $("#top-text").text("Next time, Goldar!");
+        $("#mid-text").html("Zero Health, Game over<br>(Refresh)");
         gameState = "GameOver";
     }
     // update display

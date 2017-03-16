@@ -1,5 +1,7 @@
-var powerBases = [4, 6, 8, 10],
+// var powerBases = [100, 100, 100, 100],
+var powerBases = [15, 20, 25, 30],
     CONST_counterAttack = 25,
+    enemiesDefeated = 0,
     gameState,
     images = ["blue.JPG", "red0.JPG", "pink0.JPG", "green.JPG"],
     initialHealths = [125, 150, 175, 200],
@@ -57,7 +59,7 @@ $("body").on("click", "#attack-button", function() {
     playerProfiles[playerSelfN].healthPoints = playerProfiles[playerSelfN].healthPoints - playerProfiles[playerOpponentN].attackPower;
     if (playerProfiles[playerSelfN].healthPoints <= 0) {
         $("#ranger" + playerSelfN + "-points-text").text("0");
-        $("#mid-text").text("Zero Health...Game over (Refresh).");
+        $("#mid-text").html("Zero Health, Game over<br>Next time, Goldar!<br>(Refresh)");
         gameState = "GameOver";
     }
     $("#ranger" + playerSelfN + "-points-text").text(playerProfiles[playerSelfN].healthPoints);
@@ -65,10 +67,18 @@ $("body").on("click", "#attack-button", function() {
     playerProfiles[playerOpponentN].healthPoints = playerProfiles[playerOpponentN].healthPoints - playerProfiles[playerSelfN].attackPower;
     playerProfiles[playerSelfN].attackPower += playerProfiles[playerSelfN].powerBase;
     if (playerProfiles[playerOpponentN].healthPoints <= 0) {
-        $("#ranger" + playerOpponentN + "-points-text").text("0");
-        gameState = "selectOpponent";
-        $("#mid-text").text("Select next opponent...");
-        return;
+        enemiesDefeated++;
+        $("#ranger" + playerOpponentN).remove();
+        $("#attack-button").remove();
+        $(".div-vs").remove();
+        if (enemiesDefeated >= (profileCount - 1)) {
+            $("#mid-text").text("");
+            $("#top-text").text("Winner! Go Go Power Rangers!");
+        } else {
+            gameState = "selectOpponent";
+            $("#mid-text").text("Select next opponent...");
+            return;
+        }
     }
     $("#ranger" + playerOpponentN + "-points-text").text(playerProfiles[playerOpponentN].healthPoints);
 

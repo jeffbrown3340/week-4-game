@@ -88,13 +88,13 @@ $("body").on("click", "#attack-button", function() {
     playerProfiles[playerSelfN].healthPoints = playerProfiles[playerSelfN].healthPoints - playerProfiles[playerOpponentN].attackPower;
     // if player is dead
     if (playerProfiles[playerSelfN].healthPoints <= 0) {
-        $("#ranger" + playerSelfN + "-points-text").text("0");
+        $("#ranger" + playerSelfN + "-points-text").html("<b>0</b>");
         $("#top-text").text("Next time, Goldar!");
         $("#mid-text").html("Zero Health, Game over<br>(Refresh)");
         gameState = "GameOver";
     }
     // update display
-    $("#ranger" + playerSelfN + "-points-text").text(playerProfiles[playerSelfN].healthPoints);
+    $("#ranger" + playerSelfN + "-points-text").html("<b>" + playerProfiles[playerSelfN].healthPoints + "</b>");
     if (gameState === "GameOver") {return}
     // attack opponent
     playerProfiles[playerOpponentN].healthPoints = playerProfiles[playerOpponentN].healthPoints - playerProfiles[playerSelfN].attackPower;
@@ -119,7 +119,7 @@ $("body").on("click", "#attack-button", function() {
         }
     }
     // update display
-    $("#ranger" + playerOpponentN + "-points-text").text(playerProfiles[playerOpponentN].healthPoints);
+    $("#ranger" + playerOpponentN + "-points-text").html("<b>" + playerProfiles[playerOpponentN].healthPoints + "</b>");
 
 });
 
@@ -163,7 +163,7 @@ function createRangerIcon(element, profileObject) {
     tempElement = $("<div>");
     tempElement.addClass("ranger-image-points");
     tempElement.attr("id", "ranger" + i + "-points-text");
-    tempElement.text(profileObject.healthPoints);
+    tempElement.html("<b>" + profileObject.healthPoints + "</b>");
     $("#ranger" + i + "-frame").append(tempElement);
     tempElement = $("<div>");
     tempElement.addClass("ranger-spacer");

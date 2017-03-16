@@ -50,6 +50,7 @@ $("body").on("click", ".ranger-image-object", function() {
                     }
                     // everybody gets moved to their next place with a right side spacer div for appearance
                     $(divId).append(grabbedRanger);
+                    appendSpacer(divId, "ranger-spacer", myNBSP)
                     // change display for next step
                 }
                 $("#top-text").html("Power Up!");
@@ -59,7 +60,7 @@ $("body").on("click", ".ranger-image-object", function() {
             } else if (gameState === "selectOpponent") {
                 // now the click means user has selected an opponent
                 // put the opponent in the battlefield with versus display
-                appendSpacer("#battlefield", "div-vs", "<b>VS</b>" );
+                appendSpacer("#battlefield", "div-vs", "<b style='color: black'>VS</b>" );
                 // "grab" the corresponding profile (ie remove from array and hold it in variable)
                 grabbedRanger = $(this).detach();
                 // identify the opponent as the clicked object
@@ -91,6 +92,7 @@ $("body").on("click", "#attack-button", function() {
     playerProfiles[playerSelfN].healthPoints = playerProfiles[playerSelfN].healthPoints - playerProfiles[playerOpponentN].attackPower;
     // if player is dead
     if (playerProfiles[playerSelfN].healthPoints <= 0) {
+        $("#attack-button").remove();
         $("#ranger" + playerSelfN + "-points-text").html("<b>0</b>");
         $("#top-text").text("Next time, Goldar!");
         $("#mid-text").html("Zero Health, Game over<br>(Refresh)");
@@ -116,8 +118,9 @@ $("body").on("click", "#attack-button", function() {
             $("#mid-text").html("Winner!<br>(Refresh)");
             $("#top-text").html("Go Go<br>Power Rangers!");
         } else {
-            gameState = "selectOpponent";
+            $("#top-text").html("Rangers Forever!");
             $("#mid-text").text("Select next opponent...");
+            gameState = "selectOpponent";
             return;
         }
     }
@@ -169,9 +172,9 @@ function createRangerIcon(element, profileObject) {
     tempElement.html("<b>" + profileObject.healthPoints + "</b>");
     $("#ranger" + i + "-frame").append(tempElement);
     tempElement = $("<div>");
-    tempElement.addClass("ranger-spacer");
-    tempElement.text(myNBSP);
-    $(element).append(tempElement);
+    // tempElement.addClass("ranger-spacer");
+    // tempElement.text(myNBSP);
+    // $(element).append(tempElement);
 }
 
 
@@ -182,6 +185,7 @@ function initializeGame() {
         playerProfiles.push(spawnRanger(i));
         // create a div for color changing frame, image and Health
         createRangerIcon("#player-on-deck", playerProfiles[i]);
+        appendSpacer("#player-on-deck", "ranger-spacer", myNBSP);
     }
     $(".ranger-image-object").css("background-color", "green");
     $("#top-text").text("Select a player for yourself ...");

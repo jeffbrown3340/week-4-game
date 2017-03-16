@@ -110,8 +110,8 @@ $("body").on("click", "#attack-button", function() {
         $("#attack-button").remove();
         $(".div-vs").remove();
         if (enemiesDefeated >= (profileCount - 1)) {
-            $("#mid-text").html("(Refresh)");
-            $("#top-text").text("Winner! Go Go Power Rangers!");
+            $("#mid-text").html("Winner!<br>(Refresh)");
+            $("#top-text").text("Go Go Power Rangers!");
         } else {
             gameState = "selectOpponent";
             $("#mid-text").text("Select next opponent...");

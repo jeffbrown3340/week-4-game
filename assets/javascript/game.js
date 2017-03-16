@@ -114,7 +114,7 @@ $("body").on("click", "#attack-button", function() {
         $(".div-vs").remove();
         if (enemiesDefeated >= (profileCount - 1)) {
             $("#mid-text").html("Winner!<br>(Refresh)");
-            $("#top-text").text("Go Go Power Rangers!");
+            $("#top-text").html("Go Go<br>Power Rangers!");
         } else {
             gameState = "selectOpponent";
             $("#mid-text").text("Select next opponent...");

@@ -1,5 +1,5 @@
-// all players initialized with random power base
-// and random initial health, random color
+// all players initialized with random power base and
+// random initial health, random color
 // playerProfiles = array of playerObjects
 // playerSelf/OpponentN assigns element number to profile
 var powerBases = [20, 25, 30, 35],
@@ -12,11 +12,14 @@ var powerBases = [20, 25, 30, 35],
     myNBSP = String.fromCharCode(160),
     playerProfiles = [],
     playerOpponentN,
-    playerSelfN,
+    playerSelfN = -1,
     profileCount;
 
 $("body").on("click", ".ranger-image-object", function() {
     var grabbedRanger, divId, tempElement;
+    // ignore re-clicking the self player (only respond to clicks on opponent pool)
+    // playerSelfN initialized to -1, then permanently set to first clicked player
+    if (this.id === "ranger" + playerSelfN) {return}
     // actions based on gameState
     switch(gameState) {
         // ignore clicks on players if game in progress (attack only during game)
@@ -47,12 +50,12 @@ $("body").on("click", ".ranger-image-object", function() {
                     }
                     // everybody gets moved to their next place with a right side spacer div for appearance
                     $(divId).append(grabbedRanger);
-                    $("#top-text").text(myNBSP);
                     // change display for next step
-                    $("#mid-text").text("Select your opponent...");
-                    gameState = "selectOpponent"
                 }
+                $("#top-text").html("Power Up!");
+                $("#mid-text").text("Select your opponent...");
                 $("#player-on-deck").empty();
+                gameState = "selectOpponent"
             } else if (gameState === "selectOpponent") {
                 // now the click means user has selected an opponent
                 // put the opponent in the battlefield with versus display
